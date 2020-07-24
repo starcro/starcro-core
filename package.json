@@ -59,7 +59,7 @@
 		"find": "=0.2.7",
 		"fs-extra": "=5.0.0",
 		"ip": "=1.1.5",
-		"js-yaml": "=3.10.0",
+		"js-yaml": "=3.14.0",
 		"json-refs": "=3.0.3",
 		"starcro-elements": "https://gitlab.starcro.com/kbidc/starcro-elements.git",
 		"lodash": "=4.17.4",
