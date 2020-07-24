@@ -1,0 +1,111 @@
+{
+	"wsPort": {{getv "/starcro/wsport" "12289"}},
+	"httpPort": {{getv "/starcro/httpport" "12288"}},
+	"address": "{{getv "/starcro/address" "0.0.0.0"}}",
+	"version": "__STARCRO_VERSION__REPLACE_ME__",
+	"minVersion": "__STARCRO_MIN_VERSION__REPLACE_ME__",
+	"fileLogLevel": "{{getv "/starcro/fileloglevel" "info"}}",
+	"logFileName": "{{getv "/starcro/logfilename" "logs/starcro.log"}}",
+	"consoleLogLevel": "{{getv "/starcro/consoleloglevel" "error"}}",
+	"trustProxy": {{getv "/starcro/trustproxy" "false"}},
+	"topAccounts": {{getv "/starcro/topaccounts" "false"}},
+	"cacheEnabled": {{getv "/starcro/cacheenabled" "false"}},
+	"wsWorkers": {{getv "/starcro/wsworkers" "1"}},
+	"db": {
+		"host": "{{getv "/starcro/db/host" "localhost"}}",
+		"port": {{getv "/starcro/db/port" "5432"}},
+		"database": "{{getv "/starcro/db/database" "starcro_main"}}",
+		"user": "{{getv "/starcro/db/user" "starcro"}}",
+		"password": "{{getv "/starcro/db/password" "password"}}",
+		"min": {{getv "/starcro/db/min" "10"}},
+		"max": {{getv "/starcro/db/max" "95"}},
+		"poolIdleTimeout": {{getv "/starcro/db/poolidletimeout" "30000"}},
+		"reapIntervalMillis": {{getv "/starcro/db/reapintervalmillis" "1000"}},
+		"logEvents": ["error"],
+		"logFileName": "{{getv "/starcro/db/logfilename" "logs/starcro_db.log"}}"
+	},
+	"redis": {
+		"host": "{{getv "/starcro/redis/host" "127.0.0.1"}}",
+		"port": {{getv "/starcro/redis/port" "6380"}},
+		"db": {{getv "/starcro/redis/db" "0"}},
+		"password": {{getv "/starcro/redis/password" "null"}}
+	},
+	"api": {
+		"enabled": {{getv "/starcro/api/enabled" "true"}},
+		"access": {
+			"public": {{getv "/starcro/api/access/public" "false"}},
+			{{$whiteListEntries := getvs "/starcro/api/access/whitelist/*"}}"whiteList": [{{range $index, $element := $whiteListEntries}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+		},
+		"ssl": {
+			"enabled": {{getv "/starcro/api/ssl/enabled" "false"}},
+			"options": {
+				"port": {{getv "/starcro/api/ssl/options/port" "443"}},
+				"address": "{{getv "/starcro/api/ssl/options/address" "0.0.0.0"}}",
+				"key": "{{getv "/starcro/api/ssl/options/key" "./ssl/starcro.key"}}",
+				"cert": "{{getv "/starcro/api/ssl/options/cert" "./ssl/starcro.crt"}}"
+			}
+		},
+		"options": {
+			"limits": {
+				"max": {{getv "/starcro/api/options/limits/max" "0"}},
+				"delayMs": {{getv "/starcro/api/options/limits/delayms" "0"}},
+				"delayAfter": {{getv "/starcro/api/options/limits/delayafter" "0"}},
+				"windowMs": {{getv "/starcro/api/options/limits/windowms" "60000"}}
+			},
+			"cors": {
+				"origin": "{{getv "/starcro/api/options/cors/origin" "*"}}",
+				"methods": ["GET", "POST", "PUT"]
+			}
+		}
+	},
+	"peers": {
+		"enabled": {{getv "/starcro/peers/enabled" "true"}},
+		"list": [
+			{
+				"ip": "117.52.31.203",
+				"wsPort": 12289
+			},
+			{
+				"ip": "117.52.31.204",
+				"wsPort": 12289
+			}
+		],
+		"access": {
+			{{$blackListEntries := getvs "/starcro/peers/access/blacklist/*"}}"blackList": [{{range $index, $element := $blackListEntries}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+		},
+		"options": {
+			"timeout": {{getv "/starcro/peers/options/timeout" "5000"}},
+			"broadhashConsensusCalculationInterval": {{getv "/starcro/peers/options/broadhashconsensuscalculationinterval" "5000"}}
+		}
+	},
+	"broadcasts": {
+		"active": {{getv "/starcro/broadcasts/active" "true"}},
+		"broadcastInterval": {{getv "/starcro/broadcasts/broadcastinterval" "5000"}},
+		"broadcastLimit": {{getv "/starcro/broadcasts/broadcastlimit" "25"}},
+		"parallelLimit": {{getv "/starcro/broadcasts/parallellimit" "20"}},
+		"releaseLimit": {{getv "/starcro/broadcasts/releaselimit" "25"}},
+		"relayLimit": {{getv "/starcro/broadcasts/relaylimit" "3"}}
+	},
+	"transactions": {
+		"maxTransactionsPerQueue": {{getv "/starcro/transactions/maxtransactionsperqueue" "1000"}}
+	},
+	"forging": {
+		"force": {{getv "/starcro/forging/force" "false"}},
+		"defaultPassword": "{{getv "/starcro/forging/defaultpassword" ""}}",
+		"delegates": [{{range $index, $element := (getvs "/starcro/forging/delegates/*")}}{{$data := split $element ":"}}{{if $index}}, {{end}}
+		{
+			"encryptedPassphrase": "{{index $data 0}}",
+			"publicKey": "{{index $data 1}}"
+		}{{end}}],
+		"access": {
+			{{$whiteListEntries := getvs "/starcro/forging/access/whitelist/*"}}"whiteList": [{{range $index, $element := $whiteListEntries}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+		}
+	},
+	"syncing": {
+		"active": {{getv "/starcro/syncing/active" "true"}}
+	},
+	"loading": {
+		"loadPerIteration": {{getv "/starcro/loading/loadperiteration" "5000"}}
+	},
+	"nethash": "{{getv "/starcro/nethash" "1504fe0a9eaa3bda758cfeebc8a0dc9a5185cb51aeab865a9b816c9406048f83"}}"
+}
